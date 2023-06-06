@@ -48,8 +48,9 @@ $P(B=blue|F=o)=\frac{1}{3}$
 #### 任意范数： $||x||p=\sqrt[p]{\sum_ix_i^p}$  
 #### L0范数： $||x||0=\sqrt[0]{\sum_ix_i^0}=j$ ，表示向量 \boldsymbol{x} 中非0元素的个数；比如压缩感知 (compressive sensing)，我们很多时候希望最小化向量的 l_0 -范数。 但它是一个NP-hard问题，即直接求解它很复杂、也不可能找到解。    
 #### L1范数： $||x||1=\sqrt[1]{\sum_ix_i^1}=\sum_i|x_i|$ ，等于向量中所有元素和，压缩感知模型是将 l_0 -范数最小化问题转换成 l_1 -范数最小化问题。    
-#### L2范数： $||x||2=\sqrt[2]{\sum_ix_i^2}$ ，表示向量（或矩阵）的元素平方和开根号   
-### 1.4支持向量机（SVM）    
+#### L2范数： $||x||2=\sqrt[2]{\sum_ix_i^2}$ ，表示向量（或矩阵）的元素平方和开根号  
+  
+### 1.5支持向量机（SVM）    
 支持向量机（support vector machines, SVM）是一种二分类模型，它的基本模型是定义在特征空间上的间隔最大的线性分类器，间隔最大使它有别于感知机；SVM还包括核技巧，这使它成为实质上的非线性分类器。  
 ![image](https://pica.zhimg.com/v2-197913c461c1953c30b804b4a7eddfcc_r.webp?source=172ae18b&consumer=ZHI_MENG)  
 #### 决策边界（support vector）：
