@@ -57,6 +57,6 @@ $P(B=blue|F=o)=\frac{1}{3}$
 选出来的离两边数据点边界点最远的曲线。  
 #### 几何间隔：  
 对于给定的数据集 $T$ 和超平面 $w\cdot x+b=0$ ，定义超平面关于样本点  $\left( x_i,y_i \right)$  的几何间隔为  
-$$
- \gamma_i=y_i\left(\frac{\boldsymbol{w}}{\lVert \boldsymbol{w} \rVert}\cdot \boldsymbol{x_i}+\frac{b}{\lVert \boldsymbol{w} \rVert} \right) 
+$$  
+\gamma_i=y_i\left(\frac{\boldsymbol{w}}{\lVert \boldsymbol{w} \rVert}\cdot \boldsymbol{x_i}+\frac{b}{\lVert \boldsymbol{w} \rVert} \right) 
 $$
