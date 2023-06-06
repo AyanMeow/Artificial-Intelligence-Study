@@ -12,8 +12,16 @@
 ## 2.局部线性嵌入（LLE）  
 #### LLE首先假设数据在较小的局部是线性的，也就是说，某一个数据可以由它邻域中的几个样本来线性表示。  
 ##### 现有库：from sklearn.manifold._locally_linear import locally_linear_embedding  
+
 主要流程如下：  
-  1.计算样本数据间距离：欧式距离，余弦距离等；  
-  2.计算k邻近，其中k是输入，为每个样本可以拥有的邻居数量；  
-   
+1.计算样本数据间距离：欧式距离，余弦距离等；  
+2.计算k邻近，其中k是输入，为每个样本可以拥有的邻居数量； 
+这一步在lle中的假设为xi可以由它的邻居们xij线性表示，并且在降维之后，这些邻居依旧可以表示它，也就是它们的权重几乎不变：  
+![image](https://img-blog.csdnimg.cn/20201106160725390.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyOTAyOTk3,size_16,color_FFFFFF,t_70#pic_center)
+3.初始化权重矩阵，权重系数应有归一化限制；  
+4.找到 xi与k个近邻之间的线性关系，这显然是个回归问题，通过矩阵和拉格朗日子乘法来求解这个最优化问题；    
+5.将原样本映射到低维空间，本质其实是取输入数据M的最小的d个非零特征值对应的特征向量，其中d是需要降维到的维度；  
+  
+lle相对于isomap的计算量要小了很多，但是不同k值的选择可能对结果影响较大：  
+![image](https://pic4.zhimg.com/80/v2-e4a28aec12e3fe274e735682c225ec6f_720w.webp)
   
