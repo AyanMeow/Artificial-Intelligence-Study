@@ -60,5 +60,5 @@ $P(B=blue|F=o)=\frac{1}{3}$
 $\gamma_i=y_i\left(\frac{\boldsymbol{w}}{\lVert \boldsymbol{w} \rVert}\cdot \boldsymbol{x_i}+\frac{b}{\lVert \boldsymbol{w} \rVert} \right)$   
 其中 $\gamma=\underset{i=1,2...,N}{\min}\gamma_i$ 就是支持向量到超平面的距离。   
 SVM学习的基本想法是求解能够正确划分训练数据集并且几何间隔最大的分离超平面。对于线性可分的数据集来说，这样的超平面有无穷多个（即感知机），但是几何间隔最大的分离超平面却是唯一的。  
-经过推导之后，问题 $ \underset{\boldsymbol{w,}b}{\max}\ \gamma $ 转化为 $ \underset{\boldsymbol{w,}b}{\min}\ \frac{1}{2}\lVert \boldsymbol{w} \rVert ^2 $  
+经过推导之后，问题  $\underset{w,b}{\max}\gamma$  转化为 $\underset{w,b}{\min}\frac{1}{2}\lVert\boldsymbol{w}\rVert^2$    
 这是一个含有不等式约束的凸二次规划问题，可以对其使用拉格朗日乘子法得到其对偶问题（dual problem）。  
