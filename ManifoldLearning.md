@@ -38,7 +38,7 @@ lle相对于isomap的计算量要小了很多，但是不同k值的选择可能�
 ## 3.多维标度法（MDS）  
 #### 其主要思想是构造低维空间的内积矩阵，使得该内积矩阵中所表达的任意两点之间的距离与高维空间的相应两点距离相等，然后通过对该内积矩阵进行正交特征值分解，析出两个矩阵相乘(即矩阵与矩阵的转置进行相乘)的形式，获得最终的变换矩阵。  
 具体流程：  
-!(image)[https://img-blog.csdnimg.cn/20190304154038671.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ppYW5nNDI1Nzc2MDI0,size_16,color_FFFFFF,t_70]  
+![image](https://img-blog.csdnimg.cn/20190304154038671.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2ppYW5nNDI1Nzc2MDI0,size_16,color_FFFFFF,t_70)  
   
 ## 4.等度量映射（Isomap）  
 特点是采用测底线距离，即绕曲面表面距离，但是它的计算复杂度很高很高。
