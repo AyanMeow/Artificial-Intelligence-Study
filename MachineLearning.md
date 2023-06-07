@@ -121,12 +121,12 @@ PEP悲观剪枝：与REP相比，PEP不再需要构建一个单独的测试集�
 CCP代价复杂度剪枝： 定义了代价与复杂度的概念，代价是指在剪枝过程中因为子树被替换而增加的错分样本，复杂度表示剪枝后减少的叶结点数。  
 
 ## 6 一些评价标准
-**样本正例，分类正例：真阳TP  
-**样本正例，分类负例：假阴FN  
-**样本反例，分类正例：假阳FP  
-**样本反例，分类反例：真阴TN  
-**准确率：正反例中分类正确的比率： $arruracy=\frac{TP+TN}{TP+FN+FP+TN}$  
-**精确率：正确分类的正例数在分类后正例总数中所占比率： $precision=\frac{TP}{TP+FP}$  
-**召回率：正确分类的正例数在正样本总数中所占比率： $recall=\frac{TP}{TP+FN}$  
-**F值：精确率和召回率的调和平均值： $F=\frac{(\alpha^2+1) * arruracy * recall}{\alpha^2(arruracy+recall)}$  
-**F1值：调和参数 $\alpha$ 取值为1,：$F_1=\frac{2 * arruracy * recall}{arruracy+recall}$  
+ **样本正例，分类正例：真阳TP  
+ **样本正例，分类负例：假阴FN  
+ **样本反例，分类正例：假阳FP  
+ **样本反例，分类反例：真阴TN  
+ **准确率：正反例中分类正确的比率： $arruracy=\frac{TP+TN}{TP+FN+FP+TN}$  
+ **精确率：正确分类的正例数在分类后正例总数中所占比率： $precision=\frac{TP}{TP+FP}$  
+ **召回率：正确分类的正例数在正样本总数中所占比率： $recall=\frac{TP}{TP+FN}$  
+ **F值：精确率和召回率的调和平均值： $F=\frac{(\alpha^2+1) * arruracy * recall}{\alpha^2(arruracy+recall)}$  
+ **F1值：调和参数 $\alpha$ 取值为1,： $F_1=\frac{2 * arruracy * recall}{arruracy+recall}$  
