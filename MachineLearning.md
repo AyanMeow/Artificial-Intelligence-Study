@@ -125,8 +125,8 @@ CCP代价复杂度剪枝： 定义了代价与复杂度的概念，代价是指�
  **样本正例，分类负例：假阴FN**    
  **样本反例，分类正例：假阳FP**   
  **样本反例，分类反例：真阴TN**   
- **准确率：正反例中分类正确的比率： $arruracy=\frac{TP+TN}{TP+FN+FP+TN}$ **    
- **精确率：正确分类的正例数在分类后正例总数中所占比率： $precision=\frac{TP}{TP+FP}$ **    
- **召回率：正确分类的正例数在正样本总数中所占比率： $recall=\frac{TP}{TP+FN}$ **    
- **F值：精确率和召回率的调和平均值： $F=\frac{(\alpha^2+1) * arruracy * recall}{\alpha^2(arruracy+recall)}$ **    
- **F1值：调和参数 $\alpha$ 取值为1,： $F_1=\frac{2 * arruracy * recall}{arruracy+recall}$ **    
+ **准确率：正反例中分类正确的比率：**  $arruracy=\frac{TP+TN}{TP+FN+FP+TN}$     
+ **精确率：正确分类的正例数在分类后正例总数中所占比率：**  $precision=\frac{TP}{TP+FP}$      
+ **召回率：正确分类的正例数在正样本总数中所占比率：**  $recall=\frac{TP}{TP+FN}$    
+ **F值：精确率和召回率的调和平均值：**  $F=\frac{(\alpha^2+1) * arruracy * recall}{\alpha^2(arruracy+recall)}$   
+ **F1值：调和参数 $\alpha$ 取值为1,：**  $F_1=\frac{2 * arruracy * recall}{arruracy+recall}$      
