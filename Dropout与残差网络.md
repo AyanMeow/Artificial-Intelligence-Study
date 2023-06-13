@@ -32,8 +32,38 @@ np.random.binomial：生成与x相同形状的、概率为p的二项分布遮罩
 随着网络层数的增加，网络发生了退化（degradation）的现象：随着网络层数的增多，训练集loss逐渐下降，然后趋于饱和，当你再增加网络深度的话，训练集loss反而会增大。注意这并不是过拟合，因为在过拟合中训练loss是一直减小的。  
 当网络退化时，浅层网络能够达到比深层网络更好的训练效果，这时如果我们把低层的特征传到高层，那么效果应该至少不比浅层的网络效果差，基于这种使用直接映射来连接网络不同层直接的思想，残差网络应运而生。  
 ## 1. 残差块  
-![image](https://pic2.zhimg.com/80/v2-bd76d0f10f84d74f90505eababd3d4a1_720w.webp)  
+![1](https://pic2.zhimg.com/80/v2-bd76d0f10f84d74f90505eababd3d4a1_720w.webp)  
 残差网络是由一系列残差块组成的。一个残差块可以用表示为：   
 $$x_{l+1}=x_l+F(x_l,W_l)$$  
 残差块分成两部分直接映射部分和残差部分。 $h(x_l)$ 是直接映射，反应在上图中是左边的曲线； $F(x_l,W_l)$ 是残差部分，一般由两个或者三个卷积操作构成，即上图中右侧包含卷积的部分。  
-* BN层：
+>**BN层：**  
+>网络的第二层输入，是由第一层的参数和input计算得到的，而第一层的参数在整个训练过程中一直在变化，因此必然会引起后面每一层输入数据分布的改变。我们把网络中间层在训练过程中，数据分布的改变称之为：“Internal Covariate Shift”。BN就是要解决在训练过程中，中间层数据分布发生改变的情况。  
+>变换重构，引入可学习参数 $\gamma,\beta$ ：  
+>$$y^{(k)}=\gamma^{(k)}\widehat{x}^{(k)}+\beta^{(k)}$$  
+>使每一层的输出在经过归一化之后，仍然能够恢复出其学习到的特征。  
+>源码实现：  
+>```python
+>m = K.mean(X,axis=-1,keepdims=True) #计算均值
+>std = K.std(X,axis=-1,keepdims=True) #计算标准差
+>X_normed = (X-m) / (std + self.epsilon) #归一化
+>out = self.gamma * X_normed + self.beta #重构变换
+>```
+图中Weight在卷积网络中是指卷积操作，addition是指单位加操作。  
+在卷积网络中， $x_l$ 可能和 $x_{l+1}$ 的Feature Map的数量不一样，这时候就需要使用 1×1卷积进行升维或者降维。这时，残差块表示为：  
+$$x_{l+1}=h(x_l)+F(x_l,W_l)$$  
+这种残差块叫做resnet_v1，keras代码实现如下：  
+```python
+def res_block_v1(x, input_filter, output_filter):
+    res_x = Conv2D(kernel_size=(3,3), filters=output_filter, strides=1, padding='same')(x)
+    res_x = BatchNormalization()(res_x)
+    res_x = Activation('relu')(res_x)
+    res_x = Conv2D(kernel_size=(3,3), filters=output_filter, strides=1, padding='same')(res_x)
+    res_x = BatchNormalization()(res_x)
+    if input_filter == output_filter:
+        identity = x
+    else: #需要升维或者降维
+        identity = Conv2D(kernel_size=(1,1), filters=output_filter, strides=1, padding='same')(x)
+    x = keras.layers.add([identity, res_x])
+    output = Activation('relu')(x)
+    return output
+```
