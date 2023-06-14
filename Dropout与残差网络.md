@@ -30,7 +30,9 @@ np.random.binomial：生成与x相同形状的、概率为p的二项分布遮罩
 
 # 残差网络  
 随着网络层数的增加，网络发生了退化（degradation）的现象：随着网络层数的增多，训练集loss逐渐下降，然后趋于饱和，当你再增加网络深度的话，训练集loss反而会增大。注意这并不是过拟合，因为在过拟合中训练loss是一直减小的。  
-当网络退化时，浅层网络能够达到比深层网络更好的训练效果，这时如果我们把低层的特征传到高层，那么效果应该至少不比浅层的网络效果差，基于这种使用直接映射来连接网络不同层直接的思想，残差网络应运而生。  
+当网络退化时，浅层网络能够达到比深层网络更好的训练效果，这时如果我们把低层的特征传到高层，那么效果应该至少不比浅层的网络效果差，基于这种使用直接映射来连接网络不同层直接的思想，残差网络应运而生。 
+>误差：误差是衡量观测值和真实值之间的差距。  
+>残差：残差是指预测值和观测值之间的差距。  
 ## 1. 残差块  
 ![1](https://pic2.zhimg.com/80/v2-bd76d0f10f84d74f90505eababd3d4a1_720w.webp)  
 残差网络是由一系列残差块组成的。一个残差块可以用表示为：   
@@ -51,6 +53,7 @@ $$x_{l+1}=x_l+F(x_l,W_l)$$
 图中Weight在卷积网络中是指卷积操作，addition是指单位加操作。  
 在卷积网络中， $x_l$ 可能和 $x_{l+1}$ 的Feature Map的数量不一样，这时候就需要使用 1×1卷积进行升维或者降维。这时，残差块表示为：  
 $$x_{l+1}=h(x_l)+F(x_l,W_l)$$  
+**注意：h(·)最好不是那些非线性激活函数，常见的激活函数都可能会产生阻碍信息反向传播的问题。导致梯度爆炸或消失的问题。**   
 这种残差块叫做resnet_v1，keras代码实现如下：  
 ```python
 def res_block_v1(x, input_filter, output_filter):
@@ -66,4 +69,38 @@ def res_block_v1(x, input_filter, output_filter):
     x = keras.layers.add([identity, res_x])
     output = Activation('relu')(x)
     return output
+```
+## 2.残差网络  
+残差网络的搭建分为两步：  
+1.使用VGG公式搭建Plain VGG网络；   
+>VGG的着重改进是**采用连续的几个3x3的卷积核代替AlexNet中的较大卷积核（11x11，7x7，5x5），** 在VGG中，使用了3个3x3卷积核来代替7x7卷积核，使用了2个3x3卷积核来代替5* 5卷积核。    
+2.在Plain VGG的卷积网络之间插入Identity Mapping，注意需要升维或者降维的时候加入 1×1卷积。  
+在实现过程中，一般是直接stack残差块的方式。  
+![iamg](https://pic2.zhimg.com/80/v2-1c02c8b95a7916ad759a98507fb26079_720w.webp)  
+假设“直接映射是最好的选择”，实验表明将激活函数移动到残差部分可以提高模型的精度。于是，上面的公式变为：  
+$$x_{l+1}=x_l+F(\widehat{f}(y_l),w_{l+1})$$  
+该网络一般称做resnet_v2，keras实现如下：  
+```python
+def res_block_v2(x, input_filter, output_filter):
+    res_x = BatchNormalization()(x)
+    res_x = Activation('relu')(res_x)
+    res_x = Conv2D(kernel_size=(3,3), filters=output_filter, strides=1, padding='same')(res_x)
+    res_x = BatchNormalization()(res_x)
+    res_x = Activation('relu')(res_x)
+    res_x = Conv2D(kernel_size=(3,3), filters=output_filter, strides=1, padding='same')(res_x)
+    if input_filter == output_filter:
+        identity = x
+    else: #需要升维或者降维
+        identity = Conv2D(kernel_size=(1,1), filters=output_filter, strides=1, padding='same')(x)
+    output= keras.layers.add([identity, res_x])
+    return output
+
+def resnet_v2(x):
+    x = Conv2D(kernel_size=(3,3), filters=16 , strides=1, padding='same', activation='relu')(x)
+    x = res_block_v2(x, 16, 16)
+    x = res_block_v2(x, 16, 32)
+    x = BatchNormalization()(x)
+    y = Flatten()(x)
+    outputs = Dense(10, activation='softmax', kernel_initializer='he_normal')(y)
+    return outputs
 ```
