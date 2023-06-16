@@ -43,4 +43,12 @@ $$LayerNorm=(X+FeedForward(X))$$
 Feed Forward前馈网络是一个两层的全连接层，第一层的激活函数为 Relu，第二层不使用激活函数：  
 $$X_out=max(0,XW_1+b_1)W_2+b_2$$  
 
+对于每一个decoder块：
+* 包含两个 Multi-Head Attention 层。  
+* 第一个 Multi-Head Attention 层采用了 Masked 操作。  
+> Masked:  
+> 通过 Masked 操作可以防止第 i 个单词知道 i+1 个单词之后的信息。**注意 Mask 操作是在 Self-Attention 的 Softmax 之前使用的。即** $softmax(Masked(QK^T))V$     
+![mask](https://pic2.zhimg.com/80/v2-35d1c8eae955f6f4b6b3605f7ef00ee1_720w.webp)   
+* 第二个 Multi-Head Attention 层的K, V矩阵使用 Encoder 的编码信息矩阵C（即输出）进行计算，而Q使用上一个 Decoder block 的输出计算。  
+* 最后有一个 Softmax 层计算下一个翻译单词的概率。  
 
