@@ -37,7 +37,7 @@ Multi-Head Attention 包含多个 Self-Attention 层，首先将输入X分别传
 
 对于每一个encoder块，输入 $X_(n×d)$ ，输出 $O_(n×d)$ ，其包含Multi-Head Attention, Add & Norm, Feed Forward, Add & Norm 组成。  
 Add & Norm：残差连接+normalization：  
-$$LayerNorm=(X+MUltiHeadAttention(X))$$  
+$$LayerNorm=(X+MultiHeadAttention(X))$$  
 $$LayerNorm=(X+FeedForward(X))$$  
 
 Feed Forward前馈网络是一个两层的全连接层，第一层的激活函数为 Relu，第二层不使用激活函数：  
