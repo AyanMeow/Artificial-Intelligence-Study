@@ -52,3 +52,6 @@ $$X_out=max(0,XW_1+b_1)W_2+b_2$$
 * 第二个 Multi-Head Attention 层的K, V矩阵使用 Encoder 的编码信息矩阵C（即输出）进行计算，而Q使用上一个 Decoder block 的输出计算。  
 * 最后有一个 Softmax 层计算下一个翻译单词的概率。  
 
+## 5.参数计算  
+先定：transformer有l个相同的层，每个层分为attention部分和MLP模块。  
+attention：模型参数有 $Q,K,V$ ，对应权重矩阵和偏置 $W_Q,W_K,W_V$ 和偏置，输出权重矩阵 $W_o$ 和偏置 。 
