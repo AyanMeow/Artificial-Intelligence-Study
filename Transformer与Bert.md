@@ -54,4 +54,12 @@ $$X_out=max(0,XW_1+b_1)W_2+b_2$$
 
 ## 5.参数计算  
 先定：transformer有l个相同的层，每个层分为attention部分和MLP模块。  
-attention：模型参数有 $Q,K,V$ ，对应权重矩阵和偏置 $W_Q,W_K,W_V$ 和偏置，输出权重矩阵 $W_o$ 和偏置 。 
+attention：模型参数有 $Q,K,V$ ，对应权重矩阵和偏置 $W_Q,W_K,W_V$ 和偏置，输出权重矩阵 $W_o$ 和偏置,总参数为 $4h^2+4h$ 。     
+MLP：两个线性层，分别从 $h\rightarrow4h$ 和 $4h\rightarrowh$ ,总参数为 $8h^2+5h$ 。  
+所以，对于一个有l层的transformer来说，其参数量可近似表达为： $12lh^2+Vh$ 。   
+
+# BERT  
+**双向Transformer**  
+以往的预训练模型的结构会受到单向语言模型（从左到右或者从右到左）的限制，因而也限制了模型的表征能力，使其只能获取单方向的上下文信息。而BERT利用MLM进行预训练并且采用深层的双向Transformer组件（单向的Transformer一般被称为Transformer decoder，其每一个token（符号）只会attend到目前往左的token。而双向的Transformer则被称为Transformer encoder，其每一个token会attend到所有的token。）来构建整个模型，因此最终生成能融合左右上下文信息的深层双向语言表征。  
+
+
