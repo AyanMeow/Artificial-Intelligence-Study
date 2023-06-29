@@ -28,6 +28,25 @@ np.random.binomial：生成与x相同形状的、概率为p的二项分布遮罩
 ## 应用
 当前Dropout被大量利用于全连接网络，而且一般认为设置为0.5或者0.3，而在卷积网络隐藏层中由于卷积自身的稀疏化以及稀疏化的ReLu函数的大量使用等原因，Dropout策略在卷积网络隐藏层中使用较少。总体而言，Dropout是一个超参，需要根据具体的网络、具体的应用领域进行尝试。  
 
+## 代码实现  
+```python
+# 我们实现dropout_layer函数，该函数以dropout的概率丢弃张量输入X中的元素
+def dropout_layer(X,dropout):
+    # assert用于判断一个表达式，在表达式条件为 false 时触发异常。
+    # assert可以在条件不满足程序运行的情况下直接返回错误，不必等待程序运行后出现崩溃的情况。
+    assert 0 <= dropout <= 1
+    if dropout == 1:
+        return torch.zeros_like(X)
+    if dropout == 0:
+        return X
+    # 先产生一个X形状的矩阵，元素为rand输出的0到1的均匀分布
+    # 然后判断每个值与dropout的大小关系，大于dropout的话值就变为1，否则为0
+    # rand是产生0-1之间的均匀分布；randn是产生均值为0，方差为1的高斯分布
+    mask = (torch.rand(X.shape) > dropout).float()
+    return mask * X / (1.0 - dropout)
+```
+
+
 # 残差网络  
 随着网络层数的增加，网络发生了退化（degradation）的现象：随着网络层数的增多，训练集loss逐渐下降，然后趋于饱和，当你再增加网络深度的话，训练集loss反而会增大。注意这并不是过拟合，因为在过拟合中训练loss是一直减小的。  
 当网络退化时，浅层网络能够达到比深层网络更好的训练效果，这时如果我们把低层的特征传到高层，那么效果应该至少不比浅层的网络效果差，基于这种使用直接映射来连接网络不同层直接的思想，残差网络应运而生。 
