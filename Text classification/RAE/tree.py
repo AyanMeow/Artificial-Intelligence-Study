@@ -29,6 +29,5 @@ class RTree(object):
             self.cal_leaves(root.lc)
             self.cal_leaves(root.rc)
             
-        
 
     
