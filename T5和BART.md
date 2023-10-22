@@ -2,7 +2,7 @@
 
 **Transfer Text-to-Text Transformer**
 
-**Transformer 的 Encoder-Decoder 模型** 
+**Transformer 的 Encoder-Decoder 模型**
 
 **将所有 NLP 任务都转化成 Text-to-Text （文本到文本）任务** 。
 
@@ -63,3 +63,31 @@ Bert-style 最好，进入下一轮。
 第四方面，因为 Replace Span 需要决定 **对大概多长的小段进行破坏** ，于是对不同长度进行探索，2，3，5，10 这四个值，最后发现 **3** 结果最好。
 
 # BART
+
+t5架构。**BART模型**就是使用**Transformer模型整体结构的预训练语言模型**
+
+![1697869280043](image/T5和BART/1697869280043.png)
+
+BART模型的预训练是 **对原始文本破坏再重建** ，因此损失函数为decoder的输出与原始文本的交叉熵。BART模型共介绍了**5种**破坏原始文本的噪声方法。
+
+![1697869474697](image/T5和BART/1697869474697.png)
+
+**Token Masking**
+
+Token掩码，与BERT模型策略一致，随机抽取token，并用[MASK]标记进行替换。
+
+**Token Deletion**
+
+Token删除，从输入中随机删除token，与掩码不同，该策略为了让模型学习哪些位置缺少输入信息。
+
+**Text Infilling**
+
+文本填充，随机挑选一个文本片段（文本片段的长度符合 *λ * = 3的泊松分布），并且使用一个[MASK]标记进行替换。当片段长度为0时，相当于在原始位置插入一个[MASK]标记。与SpanBERT模型不同的是，SpanBERT模型是使用片段长度个数的[MASK]标记进行替换。
+
+**Sentence Permutation**
+
+句子排序，将文本按照句号进行分割，生成句子序列，然后将句子之间的顺序随机打乱。
+
+**Document Rotation**
+
+文档旋转，随机选择一个token，然后将文本进行旋转，即以选择token作为文本的开头。该策略让模型学习文本的开头。

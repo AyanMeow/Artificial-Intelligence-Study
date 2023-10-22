@@ -38,6 +38,35 @@ RoBERTa模型是对BERT模型的精调，它细致分析了BERT模型的超参�
 
 （2）引入**动态掩码（dynamic mask）：即在每个批次数据**喂进模型的时候执行MASK操作
 
+## DeBERTa
+
+### 1.0版本
+
+![1697867259345](image/Bert/1697867259345.png)
+
+1.0版本在BERT的基础上有三个主要的改进点：
+
+1. 更加解耦的self attention，上图中右边黄色部分；这里的解耦是将位置信息和内容信息分别/交叉做attention。其中，第四项不受关注。
+
+   ![1697868003964](image/Bert/1697868003964.png)
+
+   ![1697868180931](image/Bert/1697868180931.png)
+2. 考虑绝对位置的MLM任务，上图中Enhanced Mask Decoder；**解耦注意力机制已经考虑了上下文词的内容和相对位置，但没有考虑这些词的绝对位置** ，这在很多情况下对于预测至关重要。给定一个句子“a new store opened beside the new mall”，并用“store”和“mall”两个词mask以进行预测。**两者都以相同的相对位置在new单词之后。 为了解决这个限制，模型需要考虑绝对位置，作为相对位置的补充信息。** **在DeBERTa中，我们在所有Transformer层之后将绝对位置信息合并** ，然后在softmax层之前进行mask token预测。
+3. 预训练时引入对抗训练。DeBERTa预训练里面引入的对抗训练叫SiFT。他攻击的对象不是word embedding，而是embedding之后的layer norm。
+
+### 2.0 版本
+
+1. 更换tokenizer，将词典扩大了。从1.0版的50k扩成了128k。这个扩大无疑大大增加了模型的capacity。
+2. 在第一个transformer block后加入卷积。**这个技巧在token classification、span prediction任务里经常用到。**
+3. 共享位置和内容的变换矩阵
+4. 把相对位置编码换成了log bucket（？），各个尺寸模型的bucket数都是256
+
+### 3.0 版本
+
+在模型层面并没有修改，而是将预训练任务由掩码语言模型（MLM）换成了ELECTRA一样类似GAN的Replaced token detect任务
+
+> 首先使用一个生成器预测句中被mask掉的token，接下来使用预测的token替代句中的 `[MASK]`标记，然后使用一个判别器区分句中的每个token是原始的还是替换后的。
+
 ## ALBERT
 
 ALBERT在保持性能的基础上，大大减少了模型的参数，使得实用变得更加方便，是经典的BERT变体之一。
@@ -123,8 +152,4 @@ XLNet是一种广义的自回归(auto-regressive)预训练方法。
 
 改变了预训练任务：**replace span（小段替换）法** ，可以把它当作是把上面 Mask 法中相邻 [M] 都合成了一个特殊符，每一小段替换一个特殊符，提高计算效率；
 
-<pre class="vditor-reset" placeholder="" contenteditable="true" spellcheck="false"><p data-block="0"><br class="Apple-interchange-newline"/><img src="https://file+.vscode-resource.vscode-cdn.net/i%3A/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/Artificial-Intelligence-Study/image/T5/1697782015950.png" alt="1697782015950"/></p></pre>
-
-## RoBERTa
-
-## DeBERTa
+<pre class="vditor-reset" placeholder="" contenteditable="true" spellcheck="false"><p data-block="0"><br class="Apple-interchange-newline"/><img src="https://file+.vscode-resource.vscode-cdn.net/i%3A/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0/Artificial-Intelligence-Study/image/T5/1697782015950.png" alt="1697782015950"/></p></pre
