@@ -71,6 +71,20 @@ Template也可以是结构化的，通过不同的元素来组成目标Template�
 
 第四步骤，对于得到的 `answer`，我们需要使用 `Verbalizer` 将其映射回原本的label。
 
+## In-Context Learning
+
+![1698895239175](image/InContextLearning/1698895239175.png)
+
+In Context Learning（ICL）的关键思想是从类比中学习。上图给出了一个描述语言模型如何使用 ICL 进行决策的例子。首先，ICL 需要一些示例来形成一个演示上下文。这些示例通常是用自然语言模板编写的。然后 ICL 将查询的问题（即你需要预测标签的 input）和一个上下文演示（一些相关的 cases）连接在一起，形成带有提示的输入，并将其输入到语言模型中进行预测。
+
+值得注意的是，与需要使用反向梯度更新模型参数的训练阶段的监督学习不同， **ICL 不需要参数更新，并直接对预先训练好的语言模型进行预测（这是与 prompt，传统 demonstration learning 不同的地方，ICL 不需要在下游 P-tuning 或 Fine-tuning）** 。我们希望该模型学习隐藏在演示中的模式，并据此做出正确的预测。
+
+![1698897865323](image/PromptLearning和deltatuning/1698897865323.png)
+
+### 结论一、in-context learning中，模型并没有学习输入和标签之间的对应关系
+
+### 结论二、in-context learning中，模型学到（激活）了输入数据、预测标签的分布，以及这种数据+label的语言表达形式。
+
 ## Delta tuning
 
 ![1697875934048](image/PromptLearning和deltatuning/1697875934048.png)
