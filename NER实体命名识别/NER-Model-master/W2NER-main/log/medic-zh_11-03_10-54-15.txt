@@ -1,0 +1,10 @@
+2023-11-03 10:54:16 - INFO: dict_items([('dataset', 'medic-zh'), ('save_path', './model.pt'), ('predict_path', './output.json'), ('dist_emb_size', 20), ('type_emb_size', 20), ('lstm_hid_size', 512), ('conv_hid_size', 96), ('bert_hid_size', 768), ('biaffine_size', 512), ('ffnn_hid_size', 288), ('dilation', [1, 2, 3]), ('emb_dropout', 0.5), ('conv_dropout', 0.5), ('out_dropout', 0.33), ('epochs', 10), ('batch_size', 12), ('learning_rate', 0.001), ('weight_decay', 0), ('clip_grad_norm', 5.0), ('bert_name', 'I:/◊‘»ª”Ô—‘—ßœ∞/model/macbert-base-chinese-medical-collation'), ('bert_learning_rate', 5e-06), ('warm_factor', 0.1), ('use_bert_last_4_layers', True), ('seed', 123), ('config', './config/medic.json'), ('device', 0)])
+2023-11-03 10:54:49 - INFO: Loading Data
+2023-11-03 11:05:51 - INFO: 
++----------+-----------+----------+
+| medic-zh | sentences | entities |
++----------+-----------+----------+
+|  train   |    2139   |   6576   |
+|   dev    |     12    |    32    |
+|   test   |     12    |    32    |
++----------+-----------+----------+
