@@ -188,26 +188,26 @@ class Trainer(object):
         label_result = torch.cat(label_result)
         pred_result = torch.cat(pred_result)
 
-        p, r, f1, _ = precision_recall_fscore_support(label_result.numpy(),
-                                                      pred_result.numpy(),
-                                                      average="macro")
-        e_f1, e_p, e_r = utils.cal_f1(total_ent_c, total_ent_p, total_ent_r)
+        # p, r, f1, _ = precision_recall_fscore_support(label_result.numpy(),
+        #                                               pred_result.numpy(),
+        #                                               average="macro")
+        # e_f1, e_p, e_r = utils.cal_f1(total_ent_c, total_ent_p, total_ent_r)
 
-        title = "TEST"
-        logger.info('{} Label F1 {}'.format("TEST", f1_score(label_result.numpy(),
-                                                            pred_result.numpy(),
-                                                            average=None)))
+        # title = "TEST"
+        # logger.info('{} Label F1 {}'.format("TEST", f1_score(label_result.numpy(),
+        #                                                     pred_result.numpy(),
+        #                                                     average=None)))
 
-        table = pt.PrettyTable(["{} {}".format(title, epoch), 'F1', "Precision", "Recall"])
-        table.add_row(["Label"] + ["{:3.4f}".format(x) for x in [f1, p, r]])
-        table.add_row(["Entity"] + ["{:3.4f}".format(x) for x in [e_f1, e_p, e_r]])
+        # table = pt.PrettyTable(["{} {}".format(title, epoch), 'F1', "Precision", "Recall"])
+        # table.add_row(["Label"] + ["{:3.4f}".format(x) for x in [f1, p, r]])
+        # table.add_row(["Entity"] + ["{:3.4f}".format(x) for x in [e_f1, e_p, e_r]])
 
-        logger.info("\n{}".format(table))
+        # logger.info("\n{}".format(table))
 
         with open(config.predict_path, "w", encoding="utf-8") as f:
             json.dump(result, f, ensure_ascii=False)
 
-        return e_f1
+        return 1
 
     def save(self, path):
         torch.save(self.model.state_dict(), path)
