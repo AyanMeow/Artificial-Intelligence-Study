@@ -146,7 +146,9 @@ XLNet是一种广义的自回归(auto-regressive)预训练方法。
 
 组合：
 
-![1697777349814](image/Bert/1697777349814.png)一最下面一样的w ，和Relative Positional Encoding 有关。
+![1697777349814](image/Bert/1697777349814.png)
+
+最下面一样的w ，和Relative Positional Encoding 有关。
 
 ## SpanBert
 
