@@ -70,21 +70,29 @@ $$
 
 残差块分成两部分直接映射部分和残差部分。 $h(x_l)$ 是直接映射，反应在上图中是左边的曲线； $F(x_l,W_l)$ 是残差部分，一般由两个或者三个卷积操作构成，即上图中右侧包含卷积的部分。
 
-> **BN层：**
-> 网络的第二层输入，是由第一层的参数和input计算得到的，而第一层的参数在整个训练过程中一直在变化，因此必然会引起后面每一层输入数据分布的改变。我们把网络中间层在训练过程中，数据分布的改变称之为：“Internal Covariate Shift”。BN就是要解决在训练过程中，中间层数据分布发生改变的情况。
-> 变换重构，引入可学习参数 $\gamma,\beta$ ：
->
-> $$
-> y^{(k)}=\gamma^{(k)}\widehat{x}^{(k)}+\beta^{(k)}$$  
-> 使每一层的输出在经过归一化之后，仍然能够恢复出其学习到的特征。  
-> 源码实现：  
-> ```python
-> m = K.mean(X,axis=-1,keepdims=True) #计算均值
-> std = K.std(X,axis=-1,keepdims=True) #计算标准差
-> X_normed = (X-m) / (std + self.epsilon) #归一化
-> out = self.gamma * X_normed + self.beta #重构变换
-> ```
-> $$
+**BN层：**
+网络的第二层输入，是由第一层的参数和input计算得到的，而第一层的参数在整个训练过程中一直在变化，因此必然会引起后面每一层输入数据分布的改变。我们把网络中间层在训练过程中，数据分布的改变称之为：“Internal Covariate Shift”。BN就是要解决在训练过程中，中间层数据分布发生改变的情况。
+变换重构，引入可学习参数 $\gamma,\beta$ ：
+
+$$
+y^{(k)}=\gamma^{(k)}\widehat{x}^{(k)}+\beta^{(k)}
+$$
+
+
+使每一层的输出在经过归一化之后，仍然能够恢复出其学习到的特征。
+源码实现：
+
+```python
+m = K.mean(X,axis=-1,keepdims=True) #计算均值
+std = K.std(X,axis=-1,keepdims=True) #计算标准差
+X_normed = (X-m) / (std + self.epsilon) #归一化
+out = self.gamma * X_normed + self.beta #重构变换
+```
+
+$$
+
+
+$$
 
 图中Weight在卷积网络中是指卷积操作，addition是指单位加操作。
 在卷积网络中， $x_l$ 可能和 $x_{l+1}$ 的Feature Map的数量不一样，这时候就需要使用 1×1卷积进行升维或者降维。这时，残差块表示为：
@@ -125,7 +133,6 @@ def res_block_v1(x, input_filter, output_filter):
 $$
 x_{l+1}=x_l+F(\widehat{f}(y_l),w_{l+1})
 $$
-
 
 该网络一般称做resnet_v2，keras实现如下：
 
