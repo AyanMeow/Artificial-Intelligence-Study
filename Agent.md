@@ -21,5 +21,8 @@ Langchain提供了多种文本分割器，包括CharacterTextSplitter(),Markdown
 
 * **PythonCodeTextSplitter**：可以将文本按Python类和方法定义进行拆分，它是RecursiveCharacterSplitter的一个简单子类，具有Python特定的分隔符。
 * **SpacyTextSplitter**：NLTK 的另一种替代方案是使用 Spacy。
-
 * **TokenTextSplitter**：对于openai的模型来说，按照token标记进行分割。
+
+## 向量化及向量数据库
+
+使用langchain.embeddings库，可以加载openai的embedding模型或是huggingface的，支持加载本地模型。
